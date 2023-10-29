@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Generate Report";
+}
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<h2>Generate Report</h2>
+
+<p>Select a report type:</p>
+<select id="reportType">
+    <option value="CurrentLoansReport">Current Loans Report</option>
+    <option value="OverdueBooksReport">Overdue Books Report</option>
+    <option value="BorrowingHistoryReport">Borrowing History Report</option>
+</select>
+<button id="generateReport">Generate Report</button>
+
+
+<div id="reportContainer">
+    <!-- Report content will be displayed here -->
+
+</div>
+
+<div id="graphicalComponent">
+    <!-- Placeholder for the graphical component -->
+    <canvas id="reportChart" width="400" height="400"></canvas>
+</div>
+
+
+
+<h1>Archive</h1>
+<div id="archive">
+    <!-- Placeholder for archives -->
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#generateReport").click(function () {
+            var reportType = $("#reportType").val();
+
+            // Directly set the URL based on the selected reportType
+            var url = "/Home/Contact?typeId=" + reportType;
+
+            window.location.href = url;
+        });
+    });
+</script>
+
+
+
+

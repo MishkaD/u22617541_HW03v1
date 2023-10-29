@@ -1,0 +1,168 @@
+﻿@model HW03v1.Models.CombinedViewModel
+
+@{
+    ViewBag.Title = "Combined Index";
+}
+
+<style>
+
+</style>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+<div class="container">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.7.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <p>
+        <h1> Students </h1>  <a href="#" class="create-link btn btn-primary" style="background-color: rebeccapurple" data-url="@Url.Action("Create", "students")"> Create </a> 
+    </p>
+
+
+    <table class="table table-bordered">
+        <thead>
+            <tr style="background-color:mediumpurple;">
+                <th>@Html.DisplayNameFor(model => model.student.First().name)</th>
+                <th>@Html.DisplayNameFor(model => model.student.First().surname)</th>
+                <th>@Html.DisplayNameFor(model => model.student.First().birthdate)</th>
+                <th>@Html.DisplayNameFor(model => model.student.First().gender)</th>
+                <th>@Html.DisplayNameFor(model => model.student.First().@class)</th>
+                <th>@Html.DisplayNameFor(model => model.student.First().point)</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.student)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.surname)</td>
+                    <td>@Html.DisplayFor(modelItem => item.birthdate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.gender)</td>
+                    <td>@Html.DisplayFor(modelItem => item.@class)</td>
+                    <td>@Html.DisplayFor(modelItem => item.point)</td>
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <!-- Pagination student -->
+    <ul class="pagination">
+        @for (int i = 1; i <= ViewBag.TotalStudentPages; i++)
+        {
+            <li class="page-item @(i == ViewBag.CurrentStudentPage ? "active" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+            </li>
+        }
+    </ul>
+
+
+
+    <p>
+        <h1> Books  </h1> <a href="#" class="create-link btn btn-primary" style="background-color: rebeccapurple" data-url="@Url.Action("Create", "books")"> Create </a> 
+    </p>
+
+
+    <table class="table table-bordered">
+        <thead>
+            <tr style="background-color: mediumpurple;">
+                <th>@Html.DisplayNameFor(model => model.book.First().name)</th>
+                <th>@Html.DisplayNameFor(model => model.book.First().pagecount)</th>
+                <th>@Html.DisplayNameFor(model => model.book.First().point)</th>
+                <th>@Html.DisplayNameFor(model => model.book.First().authors.name)</th>
+                <th>@Html.DisplayNameFor(model => model.book.First().types.name)</th>
+                @* <th>@Html.DisplayNameFor(model => model.book.First().borrows.) </th>*@
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.book)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.pagecount)</td>
+                    <td>@Html.DisplayFor(modelItem => item.point)</td>
+                    <td>@Html.DisplayFor(modelItem => item.authors.name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.types.name)</td>
+                    @*<td>@Html.DisplayFor(modelItem => item.borrows.)</td>*@
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <!-- Pagination book -->
+    <ul class="pagination">
+        @for (int i = 1; i <= ViewBag.TotalBookPages; i++)
+        {
+            <li class="page-item @(i == ViewBag.CurrentBookPage ? "active" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+            </li>
+        }
+    </ul>
+    <hr />
+</div>
+
+
+
+<div id="myModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sample Async CRUD</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modal-content">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(function () {
+
+        $(".edit-link, .edit-link-in-modal").click(function (e) {
+            e.preventDefault();
+            var url = $(this).data("url");
+
+            $.get(url, function (data) {
+                $("#modal-content").empty();
+                $("#modal-content").html(data);
+                $("#myModal").modal("show");
+            });
+        });
+
+
+        $("#modal-content").on("submit", "form", function (e) {
+            e.preventDefault();
+            var form = $(this);
+            var url = form.attr("action");
+            var formData = form.serialize();
+
+            $.post(url, formData, function (data) {
+                $("#myModal").modal("hide");
+                location.reload();
+            });
+        });
+
+
+        $(".details-link, .delete-link, .create-link, .create-lookup-link").click(function (e) {
+            e.preventDefault();
+            var url = $(this).data("url");
+
+            $.get(url, function (data) {
+                $("#modal-content").empty();
+                $("#modal-content").html(data);
+                $("#myModal").modal("show");
+            });
+        });
+    });
+</script>
